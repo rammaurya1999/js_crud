@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CRUD with JS</title>
+<style>
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+th, td {
+  text-align: center;
+  padding: 16px;
+}
+
+th:first-child, td:first-child {
+  text-align: left;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2
+}
+
+.fa-check {
+  color: green;
+}
+
+.fa-remove {
+  color: red;
+}
+.button {
+    color:green;
+}
+#del {
+  color: red;
+  cursor: pointer;
+}
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 1; 
+  padding-top: 100px; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto; 
+  background-color: rgb(0,0,0); 
+  background-color: rgba(0,0,0,0.4); 
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+a {
+  text-decoration: none;
+}
+.del {
+  color: red;
+}
+</style>
+</head>
+<body>
+<h2>CRUD with JS</h2>
+<button id="myBtn" class="button">ADD More</button><br><br>
+<table id="table_id">
+  <thead>
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Contact</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="exist">
+      <tr><td>1 </td> <td>Ram</td> <td>rkmaurya6999@gmail.com </td> <td>9026992938 </td> <td> <a href="#" id="del1" class="del" onclick="del(1)">Delete </a> | <a href="#" onclick="edit(1)" id="edit1"> Edit </a></td> </tr>
+    </tbody>
+</table>
+<input type="hidden" name="" id="count" value="0">
+
+<!-- Model start here -->
+  <div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <form method="get" id="myForm">
+      Enter your Name<input type="text" name="" id="name"><br><br>
+      Enter Your Email<input type="email" name="" id="email"><br><br>
+      Enter your Phone<input type="number" name="" id="number"><br><br>
+
+      <input type="button" name="" value="Submit" onclick="get_data()">
+    </form>
+  </div>
+
+</div>
+<!-- end here -->
+
+
+<script type="text/javascript">
+
+  function get_data()
+  {
+    // alert(1)
+    var name=document.getElementById("name").value;
+    var email=document.getElementById("email").value;
+    var number=document.getElementById("number").value;
+
+    if(name=='')
+    {
+      alert("Please fill Your Name");
+      return false;
+    }
+    else if(email=='')
+    {
+      alert("Please fill Your Email");
+      return false;
+    }
+    else if(number=='')
+    {
+      alert("Please fill Your Phone Number");
+      return false;
+    }
+    else
+    {
+      var count=document.getElementById("count").value;
+      if(count !='')
+      {
+       var new_id= document.getElementById("count").value=Number(count)+1;
+       var id=1;
+       var data='';
+       var newData='';
+       for(var i=0;i<new_id;i++)
+        {
+           var existingData = document.getElementById('exist').innerHTML;
+           if(existingData.trim().length !=0)
+            {
+              data='<tr><td>'+id+' </td> <td>'+name+'</td> <td>'+email+' </td> <td> '+number+' </td> <td> <a href="#" id="del'+id+'" class="del" onclick="del('+id+')">Delete </a> | <a href="#" onclick="edit('+id+')" id="edit'+id+'"> Edit </a></td> </tr>';
+               newData=existingData+data;
+            }
+            else
+            {
+              data='<tr><td>'+id+' </td> <td>'+name+'</td> <td>'+email+' </td> <td> '+number+' </td> <td> <a href="#" id="del'+id+'" class="del" onclick="del('+id+')">Delete </a> | <a href="#" onclick="edit('+id+')" id="edit'+id+'"> Edit </a></td> </tr>';
+               newData=data;
+            }
+          
+          id++;
+        }
+        document.getElementById("myModal").style.display="none";
+        document.getElementById('exist').innerHTML=newData;
+        var form = document.getElementById("myForm");
+            var elements = form.elements;
+
+            for (var i = 0; i < elements.length; i++) {
+                if (elements[i].type !== "button") {
+                    elements[i].value = "";
+                }
+            }
+
+      }
+    }
+
+  }
+
+  function del(id)
+  {
+    if(confirm("Are You Sure to delete it"))
+    {
+      alert("Deleted Success");
+    }
+    else
+    {
+      alert("You have Click on Cancel");
+    }
+  }
+
+  function edit(id)
+  {
+    // alert(id)
+    var name=document.getElementById("name").value;
+    var email=document.getElementById("email").value;
+    var number=document.getElementById("number").value;
+    var existingData = document.getElementById('exist').innerHTML;
+    alert(existingData)
+    var class_count = document.getElementsByClassName('.class_' + id).innerHTML;
+    alert(class_count)
+    var modal = document.getElementById("myModal");
+    modal.style.display = "block";
+    
+  }
+
+  
+</script>
+<!-- modal -->
+<script>
+var modal = document.getElementById("myModal");
+var btn = document.getElementById("myBtn");
+
+var span = document.getElementsByClassName("close")[0];
+
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
+</body>
+</html>
+
